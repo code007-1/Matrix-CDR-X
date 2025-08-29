@@ -1,0 +1,1 @@
+export let cdr_count = [0, 0, 0]; //internal, incoming, outgoing

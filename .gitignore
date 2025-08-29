@@ -1,0 +1,8 @@
+node_modules
+/cdr-x/out
+.DS_Store
+*.log*
+/cdr-x/node_modules
+/cdr-x/build
+/cdr-x/dist
+/server/node_modules/

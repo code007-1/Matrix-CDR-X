@@ -1,0 +1,15 @@
+{
+  "type": "module",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "http": "^0.0.1-security",
+    "jsonwebtoken": "^9.0.2",
+    "mysql2": "^3.11.3",
+    "node-machine-id": "^1.1.12",
+    "sqlite3": "^5.1.7",
+    "systeminformation": "^5.27.7",
+    "winston": "^3.17.0"
+  }
+}

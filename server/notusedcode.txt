@@ -1,0 +1,122 @@
+...................................................load data
+    /*const results = [];
+
+    try {
+        createReadStream("cdr/" + type + '.csv')
+            .pipe(csv())
+            .on('data', (data) => { results.push(data); })
+            .on('end', () => {
+                //console.log("data loading complete : ", results[0]); // All rows are now loaded into the results array
+                return response.status(200).send(results);
+            });
+    }
+    catch (error) {
+        console.log("error occured while loading data : ", error);
+        return response.status(500).send(error);
+    }*/
+
+
+    function testload() {
+    sqlite3.verbose();
+    // Open a database connection
+    let db = new sqlite3.Database('./mydatabase.db', (err) => {
+        if (err) {
+            console.error(err.message);
+        }
+        console.log('Connected to the SQLite database.');
+    });
+
+    // Create a table
+    db.run(`CREATE TABLE IF NOT EXISTS outgoing (
+    sno INTEGER PRIMARY KEY AUTOINCREMENT,
+    source TEXT,
+    soruceipport TEXT,
+    trunk TEXT,
+    destination TEXT,
+    destinationipport TEXT,
+    connectednumber TEXT,
+    connectedipport TEXT,
+    date TEXT,  
+    time TEXT,
+    answerduration TEXT,
+    calltype TEXT
+
+)`, (err) => {
+        if (err) {
+            console.error(err.message);
+        }
+        console.log('Table created.');
+    });
+
+    /*let sql = `INSERT INTO internal (source, soruceipport, destination, destinationipport, connectednumber, connectedipport, date, time, answerduration, calltype) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+    let params = ['445', '', '424', '', '424', '', '27-12-2005', '07:38:11', '16', ''];
+
+    db.run(sql, params, function (err) {
+        if (err) {
+            return console.error(err.message);
+        }
+        console.log(`A row has been inserted with rowid ${this.lastID}`);
+    });*/
+    //db.all('drop table outgoing');
+    db.all(`SELECT * FROM outgoing`, [], (err, rows) => {
+        if (err) {
+            throw err;
+        }
+        rows.forEach((row) => {
+            console.log(row);
+        });
+    });
+}
+
+//testload();
+
+/*/*const handleFileUpload = (e) => {
+            const file = e.target.files[0];
+            const reader = new FileReader();
+    
+            reader.onload = (event) => {
+                const workbook = XLSX.read(event.target.result, { type: 'binary' });
+                const sheetName = workbook.SheetNames[0];
+                const sheet = workbook.Sheets[sheetName];
+                const sheetData = XLSX.utils.sheet_to_json(sheet);
+    
+                setData(sheetData);
+                loadedData = sheetData;
+                console.log("")
+            };
+    
+            reader.readAsBinaryString(file);
+        };*/
+
+
+
+        export function count_data(type) {
+    let rowCount = 0;
+
+    fs.createReadStream('cdr/' + type + '.csv')
+        .pipe(csv())
+        .on('data', (row) => { rowCount++; })
+        .on('end', () => {
+            if (type === "Internal")
+                cdr_count[0] = rowCount;
+            else if (type === "Incoming")
+                cdr_count[1] = rowCount;
+            else if (type === "Outgoing")
+                cdr_count[2] = rowCount;
+        })
+        .on('error', (err) => { console.error(err); });
+}
+
+
+/*app.use(helmet({
+    contentSecurityPolicy: {
+        directives: {
+            defaultSrc: ["'self'"],
+            connectSrc: ["'self'", 'http://127.0.0.1:5173', 'http://localhost:5173/']
+        }
+    }
+}));*/
+
+
+            //const writeStream = fs.createWriteStream('a.txt');
+            //socket.pipe(writeStream);
