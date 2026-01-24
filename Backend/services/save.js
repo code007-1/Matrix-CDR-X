@@ -32,7 +32,7 @@ async function Save(rows, name) {
         }
 
         await DB.insertBatch(name, columns, rows);
-        logger.info(`rows has been inserted`);
+        //logger.info(`rows has been inserted`);
     }
     catch (error) {
         logger.error({ message: 'error occured while savind data to db', error: error });
@@ -48,7 +48,7 @@ function SplitData(data) {
         return d.map(element => element.replace(/\s+/g, ' ').trimEnd().split(' ').map(s => s.replace(/'/g, "''")));
     }
     catch (error) {
-        logger.error({ message: 'error occured while splitting data', error: error });
+        logger.error({ message: 'error occured while splitting data', error: error, data: data });
     }
 }
 
@@ -70,7 +70,7 @@ function ParseInternal(data, deviceIp) {
 
     }
     catch (error) {
-        logger.error({ message: 'error while parsing internal data', error: error });
+        logger.error({ message: 'error while parsing internal data', error: error, data: data, deviceIp: deviceIp });
     }
 }
 
@@ -91,7 +91,7 @@ function ParseIncoming(data, deviceIp) {
         Save(rows, incoming_cdr_table_name);
     }
     catch (error) {
-        logger.error({ message: 'error while parsing incoming data', error: error });
+        logger.error({ message: 'error while parsing incoming data', error: error, data: data, deviceIp: deviceIp });
     }
 }
 
@@ -114,7 +114,7 @@ function ParseOutgoing(data, deviceIp) {
         Save(rows, outgoing_cdr_table_name);
     }
     catch (error) {
-        logger.error({ message: 'error while parsing outgoing data', error: error });
+        logger.error({ message: 'error while parsing outgoing data', error: error, data: data, deviceIp: deviceIp });
     }
 }
 
@@ -125,7 +125,7 @@ function StartSocketServer(port, type) {
             logger.info(`Client connected => ${socket.remoteAddress} on port ${port} (${type})`);
 
             socket.on('data', (data) => {
-                console.info(`Received data on port => ${port} from ${socket.remoteAddress} : ${data.toString()}`);
+                //logger.info(`Received data on port => ${port} from ${socket.remoteAddress} : ${data.toString()}`);
                 if (type === 'internal') ParseInternal(data.toString(), socket.remoteAddress);
                 else if (type === 'incoming') ParseIncoming(data.toString(), socket.remoteAddress);
                 else if (type === 'outgoing') ParseOutgoing(data.toString(), socket.remoteAddress);

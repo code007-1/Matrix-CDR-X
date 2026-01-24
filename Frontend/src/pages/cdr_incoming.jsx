@@ -23,7 +23,7 @@ export function CDR_Incoming() {
     const dispatch = useDispatch();
 
     const [pageIndex, setPageIndex] = useState(1);
-    const pageSize = 1000;
+    const loadSize = 1000;
 
     const [clientPagination, setClientPagination] = useState({
         pageIndex: 0,
@@ -37,7 +37,7 @@ export function CDR_Incoming() {
                 params: {
                     type: "incoming",
                     page: page,
-                    pageSize: pageSize,
+                    pageSize: loadSize,
                     device_ip: ip === 'ALL' ? undefined : ip
                 }
             });

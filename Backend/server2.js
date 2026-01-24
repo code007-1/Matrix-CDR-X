@@ -9,7 +9,8 @@ import advance_load_data from "./api/advance_load_data.js"
 import { port } from './statics.js';
 import { consoleLogger } from './modules/prod_logger.js';
 import { DB } from "./modules/db.js";
-import { StartServer } from './services/save.js';
+//import { StartServer } from './services/save.js';
+import devices from "./api/devices.js";
 
 const app = express();
 
@@ -37,9 +38,8 @@ validateLicense().then(() => {
     app.use("/load_data", load_data);
     app.use("/update", update);
     app.use("/advance_load_data", advance_load_data);
-    import("./api/devices.js").then(module => {
-        app.use("/devices", module.default);
-    });
+    app.use("/devices", devices);
+
 
     // Loads Variables that would be used later
     async function Load_Variables() {
@@ -56,7 +56,7 @@ validateLicense().then(() => {
     // Initialize whatever needs to be intialized before running express server
     Initialize().then(() => {
         consoleLogger.info("Database initialized successfully");
-        StartServer();
+        //StartServer();
         app.listen(port, () => {
             consoleLogger.info(`Express API Server is running on port 5000`);
         });

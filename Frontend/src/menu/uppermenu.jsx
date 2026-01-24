@@ -64,9 +64,9 @@ export default function UpperMenu() {
                         <Link to="/incoming" className="transition-colors hover:text-foreground/80 text-foreground/60">All Incoming</Link>
                         <Link to="/outgoing" className="transition-colors hover:text-foreground/80 text-foreground/60">All Outgoing</Link>
 
-                        <div className="transition-colors hover:text-foreground/80 text-foreground/60 cursor-pointer flex items-center">
+                        <div className="transition-colors hover:text-foreground/80 text-foreground/60 cursor-pointer flex items-center" tabIndex={0}>
                             <DropdownMenu>
-                                <DropdownMenuTrigger className="outline-none">By Device</DropdownMenuTrigger>
+                                <DropdownMenuTrigger className="outline-none" tabIndex={1}>By Device</DropdownMenuTrigger>
                                 <DropdownMenuContent>
                                     <DropdownMenuLabel>Select By Device</DropdownMenuLabel>
                                     <DropdownMenuSeparator />

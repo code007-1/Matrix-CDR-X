@@ -24,7 +24,7 @@ export function CDR_Internal() {
 
     // Used for API parameters
     const [pageIndex, setPageIndex] = useState(1);
-    const pageSize = 1000;
+    const loadSize = 1000;
 
     // Used for DataTable client-side pagination
     const [clientPagination, setClientPagination] = useState({
@@ -39,7 +39,7 @@ export function CDR_Internal() {
                 params: {
                     type: "internal",
                     page: page,
-                    pageSize: pageSize,
+                    pageSize: loadSize,
                     device_ip: ip === 'ALL' ? undefined : ip
                 }
             });

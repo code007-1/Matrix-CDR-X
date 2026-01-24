@@ -1,31 +1,9 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import {
-    flexRender,
-    getCoreRowModel,
-    getSortedRowModel,
-    getPaginationRowModel,
-    useReactTable,
-    getFilteredRowModel,
-} from "@tanstack/react-table";
-
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from "@/components/ui/table";
-
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select";
+import { flexRender, getCoreRowModel, getSortedRowModel, getPaginationRowModel, useReactTable, getFilteredRowModel } from "@tanstack/react-table";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import DownloadPDF from "./downloadpdf";
 import { useRef } from "react";
 

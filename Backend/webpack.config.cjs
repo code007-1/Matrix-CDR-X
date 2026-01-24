@@ -2,12 +2,15 @@ const path = require("path");
 const nodeExternals = require("webpack-node-externals");
 
 module.exports = {
-    entry: './server2.js', // Your main backend file
+    entry: {
+        main: './server2.js',
+        save_service: './services/save_service_entry.js'
+    },
     target: 'node',       // Important: tells Webpack it's for Node.js
     externals: [nodeExternals()], // Skip bundling node_modules
     output: {
         path: path.resolve(__dirname, 'dist'),
-        filename: 'bundle.js'
+        filename: '[name].bundle.js'
     },
     module: {
         rules: [
