@@ -32,6 +32,7 @@ export default function UpperMenu() {
                 dispatch(set_login_status(false));
                 Cookies.remove('token');
                 sessionStorage.setItem('logged_in', 'false');
+                sessionStorage.removeItem('ai_chat_history');
                 localStorage.clear('currentPage');
                 toast({
                     variant: "default",
@@ -53,12 +54,12 @@ export default function UpperMenu() {
     }, [logged_in]);
 
     return (
-        <header className="mx-5 sticky top-0 z-50">
+        <header className="mx-5 sticky top-0 z-50 bg-background">
             <div className="flex h-14 items-center">
                 <div className="mr-4 hidden md:flex">
-                    <Link to="/" className="mr-6 flex items-center space-x-2">
+                    <div className="mr-6 flex items-center space-x-2">
                         <span className="hidden font-bold sm:inline-block text-2xl tracking-tight bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 bg-clip-text text-transparent" style={{ fontFamily: "'Righteous', cursive" }}>CDR-X</span>
-                    </Link>
+                    </div>
                     <nav className="flex items-center space-x-6 text-sm font-medium">
                         <Link to="/internal" className="transition-colors hover:text-foreground/80 text-foreground/60">All Internal</Link>
                         <Link to="/incoming" className="transition-colors hover:text-foreground/80 text-foreground/60">All Incoming</Link>
@@ -93,6 +94,7 @@ export default function UpperMenu() {
                         <div className="transition-colors hover:text-foreground/80 text-foreground/60 cursor-pointer" tabIndex={0}>
                             <AdvanceSearch />
                         </div>
+                        <Link to="/ai-chat" className="transition-colors hover:text-foreground/80 text-foreground/60">AI Chat</Link>
                     </nav>
                 </div>
                 <div className="flex flex-1 items-center justify-between space-x-2 md:justify-end">

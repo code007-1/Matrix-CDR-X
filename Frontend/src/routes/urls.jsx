@@ -5,6 +5,7 @@ import { CDR_Internal } from "../pages/cdr_internal";
 import { CDR_Incoming } from "../pages/cdr_incoming";
 import { CDR_Outgoing } from "../pages/cdr_outgoing";
 import { Login } from "../pages/login";
+import AiChatPage from "../pages/AiChatPage";
 
 ////////////////////////////////////////////////////////////////////////
 // Browser Router
@@ -35,6 +36,10 @@ export const router = createHashRouter([
             {
                 path: "/settings",
                 element: <Settings />,
+            },
+            {
+                path: "/ai-chat",
+                element: <AiChatPage />,
             }
         ],
     }

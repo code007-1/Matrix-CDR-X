@@ -88,7 +88,13 @@ export function CDR_Incoming() {
         {
             accessorKey: "date",
             header: ({ column }) => sortButton(column, "Date"),
-            name: "Date"
+            name: "Date",
+            cell: ({ row }) => {
+                const val = row.getValue("date");
+                if (!val) return "";
+                const date = new Date(val);
+                return isNaN(date.getTime()) ? val : date.toLocaleDateString("en-GB").split("/").join("-");
+            }
         },
         {
             accessorKey: "time",

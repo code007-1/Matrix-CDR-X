@@ -62,7 +62,19 @@ function ParseInternal(data, deviceIp) {
                 const [da, m, y] = d[3].split('-');
                 const date = `${y}-${m}-${da}`;
                 //csv += `('${d[1]}', '', '${d[2]}', '', '${d[2]}', '', '${date}', '${d[4]}', '${d[5]}', 'INT'),`;
-                rows.push([d[1], '', d[2], '', d[2], '', date, d[4], d[5], 'INT', deviceIp]);
+                rows.push([
+                    d[1],                             // source
+                    null,                             // soruce ipport (INTEGER)
+                    d[2],                             // destination
+                    null,                             // destinationipport (INTEGER)
+                    d[2],                             // connectednumber
+                    null,                             // connectedipport (INTEGER)
+                    date,                             // date
+                    d[4],                             // time
+                    d[5] ? parseInt(d[5], 10) : null, // answerduration (INTEGER)
+                    'INT',                            // calltype
+                    deviceIp                          // device_ip
+                ]);
             }
         });
 
@@ -84,7 +96,22 @@ function ParseIncoming(data, deviceIp) {
                 const [da, m, y] = d[5].split('-');
                 const date = `20${y}-${m}-${da}`;
                 //csv += `('${d[2]}', '', '${d[3]}', '${d[4]}', '', '${d[4]}', '', '${date}', '${d[6]}', '${d[7]}', '${d[8]}', '${d[8]}', 'INC'),`;
-                rows.push([d[2], '', d[3], d[4], '', d[4], '', date, d[6], d[7], d[8], d[8], 'INC', deviceIp]);
+                rows.push([
+                    d[2],                             // source
+                    null,                             // soruceipport (INTEGER)
+                    d[3],                             // trunk
+                    d[4],                             // destination
+                    null,                             // destinationipport (INTEGER)
+                    d[4],                             // connectednumber
+                    null,                             // connectedipport (INTEGER)
+                    date,                             // date
+                    d[6],                             // time
+                    d[7] ? parseInt(d[7], 10) : null, // answerduration (INTEGER)
+                    d[8] ? parseInt(d[8], 10) : null, // holdduration (INTEGER)
+                    d[8] ? parseInt(d[8], 10) : null, // speechduration (INTEGER)
+                    'INC',                            // calltype
+                    deviceIp                          // device_ip
+                ]);
             }
         });
 
@@ -106,7 +133,20 @@ function ParseOutgoing(data, deviceIp) {
 
                 const date = `20${y}-${m}-${da}`;
                 //csv += `('${d[1]}', '', '${d[3]}', '${d[4]}', '', '${d[4]}', '', '${date}', '${d[6]}', '${d[7]}', 'OUT'),`;
-                rows.push([d[1], '', d[3], d[4], '', d[4], '', date, d[6], d[7], 'OUT', deviceIp]);
+                rows.push([
+                    d[1],                             // source
+                    null,                             // soruceipport (INTEGER)
+                    d[3],                             // trunk
+                    d[4],                             // destination
+                    null,                             // destinationipport (INTEGER)
+                    d[4],                             // connectednumber
+                    null,                             // connectedipport (INTEGER)
+                    date,                             // date
+                    d[6],                             // time
+                    d[7] ? parseInt(d[7], 10) : null, // answerduration (INTEGER)
+                    'OUT',                            // calltype
+                    deviceIp                          // device_ip
+                ]);
             }
         });
 
@@ -122,13 +162,14 @@ function ParseOutgoing(data, deviceIp) {
 function StartSocketServer(port, type) {
     try {
         const server = net.createServer((socket) => {
-            logger.info(`Client connected => ${socket.remoteAddress} on port ${port} (${type})`);
+            const clientIp = socket.remoteAddress.split(':').pop();
+            logger.info(`Client connected => ${clientIp} on port ${port} (${type})`);
 
             socket.on('data', (data) => {
                 //logger.info(`Received data on port => ${port} from ${socket.remoteAddress} : ${data.toString()}`);
-                if (type === 'internal') ParseInternal(data.toString(), socket.remoteAddress);
-                else if (type === 'incoming') ParseIncoming(data.toString(), socket.remoteAddress);
-                else if (type === 'outgoing') ParseOutgoing(data.toString(), socket.remoteAddress);
+                if (type === 'internal') ParseInternal(data.toString(), clientIp);
+                else if (type === 'incoming') ParseIncoming(data.toString(), clientIp);
+                else if (type === 'outgoing') ParseOutgoing(data.toString(), clientIp);
             });
 
             socket.on('end', () => {
@@ -194,4 +235,4 @@ export async function StartServer() {
 
 // Ensure DB is ready? Pool connects on query.
 // StartServers
-//StartServer();
+StartServer();

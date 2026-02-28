@@ -11,6 +11,7 @@ import { consoleLogger } from './modules/prod_logger.js';
 import { DB } from "./modules/db.js";
 //import { StartServer } from './services/save.js';
 import devices from "./api/devices.js";
+import ai_chat from "./api/ai_chat.js";
 
 const app = express();
 
@@ -39,6 +40,7 @@ validateLicense().then(() => {
     app.use("/update", update);
     app.use("/advance_load_data", advance_load_data);
     app.use("/devices", devices);
+    app.use("/api", ai_chat); // Mount at /api so endpoint is /api/chat
 
 
     // Loads Variables that would be used later

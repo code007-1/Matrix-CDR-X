@@ -25,7 +25,7 @@ export function CDR_Outgoing() {
     const dispatch = useDispatch();
 
     const [pageIndex, setPageIndex] = useState(1);
-    const pageSize = 1000;
+    const loadSize = 1000;
 
     const [clientPagination, setClientPagination] = useState({
         pageIndex: 0,
@@ -39,7 +39,7 @@ export function CDR_Outgoing() {
                 params: {
                     type: "outgoing",
                     page: page,
-                    pageSize: pageSize,
+                    pageSize: loadSize,
                     device_ip: ip === 'ALL' ? undefined : ip
                 }
             });
@@ -89,7 +89,13 @@ export function CDR_Outgoing() {
         {
             accessorKey: "date",
             header: ({ column }) => sortButton(column, "Date"),
-            name: "Date"
+            name: "Date",
+            cell: ({ row }) => {
+                const val = row.getValue("date");
+                if (!val) return "";
+                const date = new Date(val);
+                return isNaN(date.getTime()) ? val : date.toLocaleDateString("en-GB").split("/").join("-");
+            }
         },
         {
             accessorKey: "time",
