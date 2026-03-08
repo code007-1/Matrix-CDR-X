@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Summary } from "./summary";
-import { sortButton } from "./column_filter";
+import { filterButton, sortButton } from "./column_filter";
 import { DataTable } from "./datatable";
 import { useDispatch, useSelector } from "react-redux";
 import { Loading } from "../loading";
@@ -100,6 +100,14 @@ export function CDR_Outgoing() {
             accessorKey: "answerduration",
             header: ({ column }) => sortButton(column, "Duration"),
             name: "Duration"
+        },
+        {
+            accessorKey: "callcategory",
+            header: ({ column }) => filterButton(column, "Call Type", ["O", "A", "E", "G", "T", "C"]),
+            filterFn: (row, columnId, filterValue) => {
+                if (!filterValue || filterValue.length === 0) return true;
+                return filterValue.includes(row.getValue(columnId));
+            }
         },
     ]
 

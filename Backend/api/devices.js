@@ -1,6 +1,6 @@
 import express from 'express';
 import { DB } from '../modules/db.js';
-import { consoleLogger } from '../modules/prod_logger.js';
+import { fileLogger } from '../modules/prod_logger.js';
 import { access_key_verification } from './login.js';
 import { StartServer } from '../services/save.js';
 
@@ -24,7 +24,7 @@ router.get('/', access_key_verification, async (req, res) => {
         }));
         res.json(formattedDevices);
     } catch (error) {
-        consoleLogger.error("Error fetching devices:", error);
+        fileLogger.error("Error fetching devices:", error);
         res.status(500).json({ error: "Internal Server Error" });
     }
 });
@@ -41,7 +41,7 @@ router.post('/bulk', access_key_verification, async (req, res) => {
         StartServer();
         res.status(200).send({ message: "Devices saved successfully" });
     } catch (error) {
-        consoleLogger.error("Error saving devices:", error);
+        fileLogger.error("Error saving devices:", error);
         res.status(500).send({ error: "Failed to save devices" });
     }
 });

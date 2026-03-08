@@ -118,9 +118,11 @@ export function CDR_Incoming() {
         },
         {
             accessorKey: "callcategory",
-            header: "Call Category",
-            //header: ({ column }) => filterButton(column, "Call Category", ["INC", "OUT", "INT", "EXT", "MOB", "SIP", "GATEWAY", "TRANSFER", "CONFERENCE", "FORWARD", "AA", "AAU", "QSIG", "DISA", "UNANSWERED", "UNKNOWN"]),
-            name: "Call Category"
+            header: ({ column }) => filterButton(column, "Call Type", ["N", "U", "I", "G", "T", "Q", "C", "F", "D", "DU"]),
+            filterFn: (row, columnId, filterValue) => {
+                if (!filterValue || filterValue.length === 0) return true;
+                return filterValue.includes(row.getValue(columnId));
+            }
         },
     ]
 

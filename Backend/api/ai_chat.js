@@ -22,7 +22,6 @@ router.post('/chat', async (req, res) => {
     try {
         // 1. Generate SQL
         const sql = await AI.generateSql(message);
-        fileLogger.info(`AI Generated SQL: ${sql}`);
 
         // 2. Execute SQL
         let results;

@@ -2,7 +2,7 @@ import express from "express";
 import { DB } from "../modules/db.js";
 import pkg1 from "bcryptjs";
 import { access_key_verification } from "./login.js";
-import { consoleLogger } from "../modules/prod_logger.js";
+import { fileLogger } from "../modules/prod_logger.js";
 
 const { hash, compare } = pkg1;
 const router = express.Router();
@@ -19,12 +19,11 @@ router.post("/", access_key_verification, async (req, res) => {
             const update = await hash(cred[1], 10);
             await DB.updatePassword('admin', update);
 
-            consoleLogger.info('Password updated successfully');
             return res.status(200).send({ message: "Password changed successfully" });
         }
         else { return res.status(401).send({ message: "Current password is wrong" }); }
     } catch (err) {
-        consoleLogger.error("error occured while updating password : ", err);
+        fileLogger.error("error occured while updating password : ", err);
         return res.status(500).send({ message: "Internal server error" });
     }
 });

@@ -9,7 +9,7 @@ import si from 'systeminformation';
 import pkg from 'node-machine-id';
 const { machineIdSync } = pkg;
 import crypto from 'crypto';
-import { consoleLogger } from './prod_logger.js';
+import { fileLogger } from './prod_logger.js';
 
 async function getFingerprint() {
     const cpu = await si.cpu();
@@ -54,7 +54,7 @@ export async function validateLicense() {
         return;
     }
     catch (error) {
-        consoleLogger.error("some error occured while validating license : ", error);
+        fileLogger.error("some error occured while validating license : ", error);
         throw new Error('error occured while validating license');
     }
 }

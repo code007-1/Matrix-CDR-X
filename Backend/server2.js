@@ -7,7 +7,7 @@ import logout from "./api/logout.js";
 import update from "./api/update.js"
 import advance_load_data from "./api/advance_load_data.js"
 import { port } from './statics.js';
-import { consoleLogger } from './modules/prod_logger.js';
+import { consoleLogger, fileLogger } from './modules/prod_logger.js';
 import { DB } from "./modules/db.js";
 //import { StartServer } from './services/save.js';
 import devices from "./api/devices.js";
@@ -27,12 +27,17 @@ app.use(cors({
 app.use(express.json());
 
 app.use((req, res, next) => {
-    consoleLogger.info(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
+    const now = new Date().toLocaleString('en-US');
+    consoleLogger.info(`[${now}] ${req.method} ${req.url}`);
+    //fileLogger.info(`[${now}] ${req.method} ${req.url}`);
     next();
 });
 
 validateLicense().then(() => {
+    consoleLogger.info("\n\nStarting Server : ", new Date().toLocaleString('en-US'));
+    fileLogger.info("\n\nStarting Server : ", new Date().toLocaleString('en-US'));
     consoleLogger.info("license verified succesfully");
+
     app.use("/login", login);
     app.use("/logout", logout);
     app.use("/load_data", load_data);

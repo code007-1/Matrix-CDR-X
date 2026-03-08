@@ -1,8 +1,5 @@
-
 import { fileLogger } from './prod_logger.js';
-
-const OLLAMA_URL = 'http://127.0.0.1:11434/api/generate';
-const MODEL_NAME = 'gemma3:4b'; // Or 'mistral', make configurable if needed
+import { GEMINI_API_URL } from '../statics.js';
 
 // Schema definition for the LLM
 const DB_SCHEMA = `
@@ -37,6 +34,7 @@ You have access to a PostgreSQL database with the following tables:
     - holdduration INTEGER, // hold duration in seconds
     - speechduration INTEGER, // speech duration in seconds
     - calltype VARCHAR(100), // call type
+    - callcategory VARCHAR(100), // call category
     - device_ip VARCHAR(45) // device ip
 
 3. outgoing
@@ -52,6 +50,7 @@ You have access to a PostgreSQL database with the following tables:
     - time TIME, // time
     - answerduration INTEGER, // answer duration in seconds
     - calltype VARCHAR(100), // call type
+    - callcategory VARCHAR(100), // call category
     - device_ip VARCHAR(45) // device ip
 
 4. devices
@@ -72,26 +71,30 @@ RULES:
 - Use 'table_name' in identifiers.
 `;
 
-async function callOllama(prompt) {
+async function callGemini(prompt) {
+    if (!GEMINI_API_URL || GEMINI_API_URL === "") {
+        throw new Error('GEMINI_API_URL is not defined');
+    }
     try {
-        const response = await fetch(OLLAMA_URL, {
+        const response = await fetch(GEMINI_API_URL, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                model: MODEL_NAME,
-                prompt: prompt,
-                stream: false
+                contents: [{
+                    parts: [{ text: prompt }]
+                }]
             })
         });
 
         if (!response.ok) {
-            throw new Error(`Ollama API error: ${response.statusText}`);
+            const errorText = await response.text();
+            throw new Error(`Gemini API error (${response.status} ${response.statusText}): ${errorText}`);
         }
 
         const data = await response.json();
-        return data.response.trim();
+        return data.candidates[0].content.parts[0].text.trim();
     } catch (error) {
-        fileLogger.error('Error calling Ollama:', error);
+        fileLogger.error('Error calling Gemini:', error);
         throw error;
     }
 }
@@ -99,7 +102,7 @@ async function callOllama(prompt) {
 export const AI = {
     generateSql: async (userQuery) => {
         const prompt = `${DB_SCHEMA}\n\nUser Question: "${userQuery}"\n\nGenerate the SQL query to answer this question. Remember, ONLY the SQL, nothing else.`;
-        let sql = await callOllama(prompt);
+        let sql = await callGemini(prompt);
 
         // Basic cleanup if the model chats a bit (though we asked it not to)
         sql = sql.replace(/```sql|```/g, '').replace(/\s+/g, ' ').trim();
@@ -121,6 +124,6 @@ export const AI = {
         Do not mention the SQL or technical details unless asked.
         `;
 
-        return await callOllama(prompt);
+        return await callGemini(prompt);
     }
 };
