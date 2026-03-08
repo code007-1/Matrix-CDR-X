@@ -14,12 +14,6 @@ async function getFingerprint() {
     return crypto.createHash('sha256').update(raw).digest('hex');
 }
 
-/*getFingerprint().then(fingerprint => {
-    console.log("Machine Fingerprint: ", fingerprint);
-}).catch(err => {
-    console.error("Error generating fingerprint: ", err);
-});*/
-
 // generateLicense.js
 import fs from 'fs';
 import path from 'path';
@@ -48,7 +42,7 @@ async function generateLicense(expiryDays = 365) {
         license.signature = sign.sign(privateKey, 'base64');
 
         // Copy public.pem and license.json to modules directory
-        const modulesDir = path.join(__dirname, '../modules');
+        const modulesDir = path.join(__dirname, '../dist/modules');
         if (!fs.existsSync(modulesDir)) {
             fs.mkdirSync(modulesDir, { recursive: true });
         }

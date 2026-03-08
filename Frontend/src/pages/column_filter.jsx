@@ -33,7 +33,6 @@ export const filterButton = (column, name, types) => {
                             checked={selectedTypesBool[element]}
                             onCheckedChange={(e) => {
                                 const a = { ...selectedTypesBool, [element]: e };
-                                console.log("filter button", element, e, a);
                                 setSelectedTypesBool(a);
                                 const b = [];
                                 for (const key in a)

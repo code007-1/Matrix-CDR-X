@@ -69,12 +69,7 @@ export default function DeviceSettings() {
                 }
             }
 
-            // Save all devices (replace implementation for now, or update individual)
-            // Ideally we'd have bulk update or smarter sync, but for now let's push the list
-            // Assuming backend handles bulk update or we iterate here.
-            // Let's implement a bulk save endpoint or iterate. For simplicity /devices POST can handle list or we iterate.
-            // Let's assume we send the whole list to replace/update.
-            console.log("saving", devices);
+            // For simplicity /devices POST can handle list or we iterate.
             await api.post('/devices/bulk', { devices });
 
             toast({

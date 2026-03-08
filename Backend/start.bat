@@ -3,14 +3,14 @@ echo Starting CDR-X Application...
 echo.
 
 REM Start backend server in a new window
-cd backend
-start "CDR-X Backend" node .\dist\main.bundle.cjs
+cd backend\dist\
+start "CDR-X Backend" node main.bundle.cjs
 
 REM Wait a moment for backend to initialize
 timeout /t 2 /nobreak > nul
 
 REM Start frontend server in a new window
-cd ..\frontend
+cd ..\..\frontend
 start "CDR-X Frontend" serve -s dist -l 5173
 
 echo.

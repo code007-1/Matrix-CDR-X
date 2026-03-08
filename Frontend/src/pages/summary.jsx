@@ -12,7 +12,6 @@ export default function Single_Info(name, data) {
 };
 
 export function Summary({ data, startContent }) {
-    //console.log("data is ", data);
     const sums = {};
     sums["calls"] = data.length;
     sums["answerduration"] = (data.reduce((accumulator, currentObject) => { return accumulator + parseFloat(currentObject.answerduration); }, 0) / 60).toFixed(2);

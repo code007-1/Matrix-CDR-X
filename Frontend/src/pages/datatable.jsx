@@ -69,7 +69,6 @@ export function DataTable({ columns, data, defaultSearchColumn, pageCount, pagin
                     />
                 </div>
                 <Button className="px-4 mr-2" onClick={(e) => {
-                    console.log("aksjdk");
                     table.resetSorting();
                     table.resetColumnFilters();
                 }

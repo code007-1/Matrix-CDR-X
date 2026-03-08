@@ -37,8 +37,6 @@ const AiChatPage = () => {
         setIsLoading(true);
 
         try {
-            // Using axios instance or raw axios if config.apiurl is needed
-            // Assuming config.apiurl is the base URL (e.g., http://localhost:5000)
             const response = await api.post(`/api/chat`, { message: userMessage.content });
 
             const aiResponse = { role: "assistant", content: response.data.answer };

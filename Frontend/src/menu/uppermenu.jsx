@@ -23,7 +23,7 @@ export default function UpperMenu() {
 
     useEffect(() => {
         api.get("/devices")
-            .then(res => { console.log("asd sisa", res.data); setDevices(res.data) })
+            .then(res => { setDevices(res.data) })
             .catch(err => console.error("Failed to fetch devices", err));
     }, []);
 

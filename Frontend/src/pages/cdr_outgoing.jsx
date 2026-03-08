@@ -43,7 +43,6 @@ export function CDR_Outgoing() {
                     device_ip: ip === 'ALL' ? undefined : ip
                 }
             });
-            console.log("response is ", response.data);
             if (page === 1) {
                 dispatch(set_outgoing_cdr({ data: response.data.data, total: response.data.total, ip }));
             } else {

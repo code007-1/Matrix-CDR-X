@@ -27,8 +27,7 @@ export async function validateLicense() {
     }
 
     try {
-        // Use process.cwd() to ensure paths work correctly in webpack builds
-        // Files should be in the modules directory relative to project root
+        // Use process.cwd() as the home path of the app and point to modules
         const licensePath = path.join(process.cwd(), 'modules', 'license.json');
         const publicKeyPath = path.join(process.cwd(), 'modules', 'public.pem');
 

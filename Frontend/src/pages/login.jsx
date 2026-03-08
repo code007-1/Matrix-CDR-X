@@ -33,8 +33,6 @@ export function Login() {
                         title: "Logged in Successfully"
                     });
                 }
-                console.log("data : ", result);
-
             }).catch((error) => {
                 toast({
                     title: "Error",
