@@ -122,7 +122,7 @@ export function AdvanceSearch() {
             <Dialog open={open} onOpenChange={(e) => { setOpen(e); setFilteredData([]); setPagination({ pageIndex: 0, pageSize: 10 }); }}>
                 <DialogTrigger asChild>
                     <div>
-                        Advance Search
+                        ADVANCE SEARCH
                     </div>
                 </DialogTrigger>
 

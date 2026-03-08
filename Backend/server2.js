@@ -33,7 +33,6 @@ app.use((req, res, next) => {
 
 validateLicense().then(() => {
     consoleLogger.info("license verified succesfully");
-
     app.use("/login", login);
     app.use("/logout", logout);
     app.use("/load_data", load_data);

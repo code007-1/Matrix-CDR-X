@@ -43,6 +43,7 @@ export function CDR_Outgoing() {
                     device_ip: ip === 'ALL' ? undefined : ip
                 }
             });
+            console.log("response is ", response.data);
             if (page === 1) {
                 dispatch(set_outgoing_cdr({ data: response.data.data, total: response.data.total, ip }));
             } else {
@@ -90,12 +91,6 @@ export function CDR_Outgoing() {
             accessorKey: "date",
             header: ({ column }) => sortButton(column, "Date"),
             name: "Date",
-            cell: ({ row }) => {
-                const val = row.getValue("date");
-                if (!val) return "";
-                const date = new Date(val);
-                return isNaN(date.getTime()) ? val : date.toLocaleDateString("en-GB").split("/").join("-");
-            }
         },
         {
             accessorKey: "time",

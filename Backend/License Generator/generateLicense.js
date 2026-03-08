@@ -36,8 +36,6 @@ async function generateLicense(expiryDays = 365) {
 
         const sign = crypto.createSign('RSA-SHA256');
         sign.update(JSON.stringify(license));
-        const privateKeyPath = path.join(__dirname, '../private.pem');
-        const licensePath = path.join(__dirname, '../license.json');
 
         // Ensure private key exists or handle error/copy it
         // Assuming private.pem is in modules folder as seen in list_dir (wait, list_dir showed it in License Generator folder? or modules folder? 
@@ -49,8 +47,16 @@ async function generateLicense(expiryDays = 365) {
         const privateKey = fs.readFileSync(path.join(__dirname, 'private.pem'), 'utf8');
         license.signature = sign.sign(privateKey, 'base64');
 
-        fs.writeFileSync(path.join(__dirname, '../license.json'), JSON.stringify(license, null, 2));
-        console.log('License generated!');
+        // Copy public.pem and license.json to modules directory
+        const modulesDir = path.join(__dirname, '../modules');
+        if (!fs.existsSync(modulesDir)) {
+            fs.mkdirSync(modulesDir, { recursive: true });
+        }
+
+        fs.copyFileSync(path.join(__dirname, 'public.pem'), path.join(modulesDir, 'public.pem'));
+        fs.writeFileSync(path.join(modulesDir, 'license.json'), JSON.stringify(license, null, 2));
+
+        console.log('License generated and copied to modules folder!');
     }
     catch (err) {
         console.log("some error occured while generating license : ", err);

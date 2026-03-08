@@ -9,7 +9,7 @@ const __dirname = path.dirname(__filename);
 const svc = new Service({
     name: 'CDR-X Server',
     description: 'CDR-X Backend Server',
-    script: path.join(__dirname, 'dist', 'bundle.js'), // Use bundled file
+    script: path.join(__dirname, 'dist', 'save_service.bundle.js'), // Use bundled file
     nodeOptions: [
         '--harmony',
         '--max_old_space_size=4096'

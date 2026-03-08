@@ -20,6 +20,10 @@ load_data.get("/", access_key_verification, async (request, response) => {
             DB.getCdrCount(type, deviceIp)
         ]);
 
+        for (let i = 0; i < rows.length; i++) {
+            rows[i].date = new Date(rows[i].date).toLocaleDateString("en-GB").split("/").join("-");
+        }
+
         return response.status(200).send({
             data: rows,
             total: count,

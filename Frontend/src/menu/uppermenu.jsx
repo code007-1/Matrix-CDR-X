@@ -22,7 +22,9 @@ export default function UpperMenu() {
     const [devices, setDevices] = useState([]);
 
     useEffect(() => {
-        api.get("/devices").then(res => setDevices(res.data)).catch(err => console.error("Failed to fetch devices", err));
+        api.get("/devices")
+            .then(res => { console.log("asd sisa", res.data); setDevices(res.data) })
+            .catch(err => console.error("Failed to fetch devices", err));
     }, []);
 
     async function logout() {
@@ -61,32 +63,44 @@ export default function UpperMenu() {
                         <span className="hidden font-bold sm:inline-block text-2xl tracking-tight bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 bg-clip-text text-transparent" style={{ fontFamily: "'Righteous', cursive" }}>CDR-X</span>
                     </div>
                     <nav className="flex items-center space-x-6 text-sm font-medium">
-                        <Link to="/internal" className="transition-colors hover:text-foreground/80 text-foreground/60">All Internal</Link>
-                        <Link to="/incoming" className="transition-colors hover:text-foreground/80 text-foreground/60">All Incoming</Link>
-                        <Link to="/outgoing" className="transition-colors hover:text-foreground/80 text-foreground/60">All Outgoing</Link>
-
                         <div className="transition-colors hover:text-foreground/80 text-foreground/60 cursor-pointer flex items-center" tabIndex={0}>
                             <DropdownMenu>
-                                <DropdownMenuTrigger className="outline-none" tabIndex={1}>By Device</DropdownMenuTrigger>
+                                <DropdownMenuTrigger className="outline-none" tabIndex={1}>CDR DATA</DropdownMenuTrigger>
                                 <DropdownMenuContent>
-                                    <DropdownMenuLabel>Select By Device</DropdownMenuLabel>
+                                    <DropdownMenuLabel className="">ALL CDR CALLS</DropdownMenuLabel>
                                     <DropdownMenuSeparator />
-                                    {devices.length === 0 && <DropdownMenuItem disabled>No devices found</DropdownMenuItem>}
-                                    {devices.map(device => (
-                                        <DropdownMenuSub key={device.id}>
-                                            <DropdownMenuSubTrigger>
-                                                <span>{device.name}</span>
-                                                <span className="ml-2 text-xs text-muted-foreground">({device.ip})</span>
-                                            </DropdownMenuSubTrigger>
-                                            <DropdownMenuPortal>
-                                                <DropdownMenuSubContent>
-                                                    <DropdownMenuItem asChild><Link to={`/internal?ip=${device.ip}`} className="w-full cursor-pointer">Internal Calls</Link></DropdownMenuItem>
-                                                    <DropdownMenuItem asChild><Link to={`/incoming?ip=${device.ip}`} className="w-full cursor-pointer">Incoming Calls</Link></DropdownMenuItem>
-                                                    <DropdownMenuItem asChild><Link to={`/outgoing?ip=${device.ip}`} className="w-full cursor-pointer">Outgoing Calls</Link></DropdownMenuItem>
-                                                </DropdownMenuSubContent>
-                                            </DropdownMenuPortal>
-                                        </DropdownMenuSub>
-                                    ))}
+                                    <DropdownMenuSub>
+                                        <DropdownMenuSubTrigger>
+                                            <span>Select By Call Type</span>
+                                        </DropdownMenuSubTrigger>
+                                        <DropdownMenuPortal>
+                                            <DropdownMenuSubContent>
+                                                <DropdownMenuItem asChild><Link to={`/internal`} className="w-full cursor-pointer">All Internal Calls</Link></DropdownMenuItem>
+                                                <DropdownMenuItem asChild><Link to={`/incoming`} className="w-full cursor-pointer">All Incoming Calls</Link></DropdownMenuItem>
+                                                <DropdownMenuItem asChild><Link to={`/outgoing`} className="w-full cursor-pointer">All Outgoing Calls</Link></DropdownMenuItem>
+                                            </DropdownMenuSubContent>
+                                        </DropdownMenuPortal>
+                                    </DropdownMenuSub>
+                                    <DropdownMenuSeparator />
+                                    <DropdownMenuLabel>SELECT BY DEVICE</DropdownMenuLabel>
+                                    <DropdownMenuSeparator />
+                                    {devices && devices.length == 0
+                                        ? <DropdownMenuItem disabled>No devices found</DropdownMenuItem>
+                                        : devices?.map(device => (
+                                            <DropdownMenuSub key={device.id}>
+                                                <DropdownMenuSubTrigger>
+                                                    <span>{device.name}</span>
+                                                    <span className="ml-2 text-xs text-muted-foreground">({device.ip})</span>
+                                                </DropdownMenuSubTrigger>
+                                                <DropdownMenuPortal>
+                                                    <DropdownMenuSubContent>
+                                                        <DropdownMenuItem asChild><Link to={`/internal?ip=${device.ip}`} className="w-full cursor-pointer">Internal Calls</Link></DropdownMenuItem>
+                                                        <DropdownMenuItem asChild><Link to={`/incoming?ip=${device.ip}`} className="w-full cursor-pointer">Incoming Calls</Link></DropdownMenuItem>
+                                                        <DropdownMenuItem asChild><Link to={`/outgoing?ip=${device.ip}`} className="w-full cursor-pointer">Outgoing Calls</Link></DropdownMenuItem>
+                                                    </DropdownMenuSubContent>
+                                                </DropdownMenuPortal>
+                                            </DropdownMenuSub>
+                                        ))}
                                 </DropdownMenuContent>
                             </DropdownMenu>
                         </div>
@@ -94,7 +108,7 @@ export default function UpperMenu() {
                         <div className="transition-colors hover:text-foreground/80 text-foreground/60 cursor-pointer" tabIndex={0}>
                             <AdvanceSearch />
                         </div>
-                        <Link to="/ai-chat" className="transition-colors hover:text-foreground/80 text-foreground/60">AI Chat</Link>
+                        <Link to="/ai-chat" className="transition-colors hover:text-foreground/80 text-foreground/60">AI CHAT</Link>
                     </nav>
                 </div>
                 <div className="flex flex-1 items-center justify-between space-x-2 md:justify-end">

@@ -284,15 +284,6 @@ export const DB = {
             }
         };
 
-        const addColumnIfNotExists = async (table, columnDefinition) => {
-            try {
-                await pool.query(`ALTER TABLE ${table} ADD COLUMN IF NOT EXISTS ${columnDefinition}`);
-            } catch (err) {
-                // If the error is not about the column already existing (which IF NOT EXISTS caches), log it.
-                fileLogger.error(`Error adding column to ${table}:`, err.message);
-            }
-        };
-
         await createTable(`CREATE TABLE IF NOT EXISTS internal (
             sno SERIAL PRIMARY KEY,
             source VARCHAR(100),
@@ -304,7 +295,7 @@ export const DB = {
             date DATE,  
             time TIME,
             answerduration INTEGER,
-            calltype VARCHAR(100),
+            calltype VARCHAR(45),
             device_ip VARCHAR(45))`);
 
         fileLogger.info('Internal Table check/creation done.');
@@ -323,7 +314,8 @@ export const DB = {
             answerduration INTEGER,
             holdduration INTEGER,
             speechduration INTEGER,
-            calltype VARCHAR(100),
+            calltype VARCHAR(45),
+            callcategory VARCHAR(45),
             device_ip VARCHAR(45))`);
 
         fileLogger.info('Incoming Table check/creation done.');
@@ -340,7 +332,8 @@ export const DB = {
             date DATE,  
             time TIME,
             answerduration INTEGER,
-            calltype VARCHAR(100),
+            calltype VARCHAR(45),
+            callcategory VARCHAR(45),
             device_ip VARCHAR(45))`);
 
         fileLogger.info('Outgoing Table check/creation done.');
@@ -355,6 +348,7 @@ export const DB = {
         )`);
         fileLogger.info('Devices Table check/creation done.');
 
+
         const createIndexIfNotExists = async (table, column) => {
             try {
                 const indexName = `idx_${table}_${column}`;
@@ -366,7 +360,7 @@ export const DB = {
         };
 
         const tables = ['internal', 'incoming', 'outgoing'];
-        const columns = ['source', 'calltype', 'date'];
+        const columns = ['source', 'destination', 'date'];
 
         for (const table of tables) {
             for (const col of columns) {
@@ -387,6 +381,6 @@ export const DB = {
             fileLogger.error(err.message);
         }
 
-        await DB.seedDemoData();
+        //await DB.seedDemoData();
     }
 };

@@ -1,4 +1,4 @@
-export const ports = [5665, 5666, 5667];//internal, incoming, outgoing
+//export const ports = [5665, 5666, 5667];//internal, incoming, outgoing
 
 export const internal_cdr_table_name = "internal";
 export const incoming_cdr_table_name = "incoming";

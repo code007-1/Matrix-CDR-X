@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Summary } from "./summary";
-import { sortButton } from "./column_filter";
+import { filterButton, sortButton } from "./column_filter";
 import { DataTable } from "./datatable";
 import { useDispatch, useSelector } from "react-redux";
 import { Loading } from "../loading";
@@ -116,6 +116,12 @@ export function CDR_Incoming() {
             header: ({ column }) => sortButton(column, "Speech Duration"),
             name: "Speech Duration"
         },
+        {
+            accessorKey: "callcategory",
+            header: "Call Category",
+            //header: ({ column }) => filterButton(column, "Call Category", ["INC", "OUT", "INT", "EXT", "MOB", "SIP", "GATEWAY", "TRANSFER", "CONFERENCE", "FORWARD", "AA", "AAU", "QSIG", "DISA", "UNANSWERED", "UNKNOWN"]),
+            name: "Call Category"
+        },
     ]
 
     if (loading && pageIndex === 1) { return (<Loading />); }
@@ -185,5 +191,3 @@ export function CDR_Incoming() {
         </div>
     );
 }
-
-//<pre>{JSON.stringify(data, null, 2)}</pre>

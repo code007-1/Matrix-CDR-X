@@ -1,10 +1,22 @@
 @echo off
-echo Checking if CDR-X Server service is running...
-sc query "CDR-X Server" | find "RUNNING"
-if %ERRORLEVEL% == 0 (
-    echo Service is running.
-) else (
-    echo Service is NOT running. Starting manually for testing...
-    node dist/bundle.js
-)
-pause
+echo Starting CDR-X Application...
+echo.
+
+REM Start backend server in a new window
+cd backend
+start "CDR-X Backend" node .\dist\main.bundle.cjs
+
+REM Wait a moment for backend to initialize
+timeout /t 2 /nobreak > nul
+
+REM Start frontend server in a new window
+cd ..\frontend
+start "CDR-X Frontend" serve -s dist -l 5173
+
+echo.
+echo Both servers started!
+echo Backend: Running in 'CDR-X Backend' window
+echo Frontend: http://localhost:5173
+echo.
+echo Press any key to close this window (servers will keep running)...
+pause > nul

@@ -10,7 +10,9 @@ module.exports = {
     externals: [nodeExternals()], // Skip bundling node_modules
     output: {
         path: path.resolve(__dirname, 'dist'),
-        filename: '[name].bundle.js'
+        filename: (pathData) => {
+            return pathData.chunk.name === 'main' ? '[name].bundle.cjs' : '[name].bundle.js';
+        }
     },
     module: {
         rules: [
